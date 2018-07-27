@@ -1,16 +1,25 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { AppIndex } from './app.index';
+import { AppComponent } from './app.component';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { AppRoutingModule } from './/app-routing.module';
+import { IndexComponent } from './index/index.component';
 
 @NgModule({
   declarations: [
-    AppIndex
+    AppComponent,
+    AboutUsComponent,
+    IndexComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [],
-  bootstrap: [AppIndex]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

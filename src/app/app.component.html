@@ -1,0 +1,73 @@
+<header class="header1 sticky">
+  <nav class="navbar navbar-default navbar-static-top fluid_header centered">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2 col-sm-6 col-xs-8">
+          <a class="navbar-brand nomargin" routerLink="/">
+            <img src="/assets/images/logo.png" alt="logo">
+          </a>
+        </div>
+        <!-- ======== Start of Main Menu ========-->
+        <div class="col-md-10 col-sm-6 col-xs-4">
+          <div class="navbar-header page-scroll">
+            <button class="navbar-toggle toggle-menu menu-right push-body jPushMenuBtn" type="button" data-toggle="collapse" data-target="#main-nav"
+              aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <!--Start of Main Nav-->
+          <div class="collapse navbar-collapse cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="main-nav">
+            <ul class="nav navbar-nav pull-right">
+              <li class="mobile-title">
+                <h4>Меню</h4>
+              </li>
+              <!-- Simple Menu Item-->
+              <li class="dropdown simple-menu">
+                <a routerLink="/" role="button">главная</a>
+              </li>
+              <li class="dropdown simple-menu">
+                <a routerLink="/data" role="button">поиск</a>
+              </li>
+              <li class="dropdown simple-menu">
+                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">информация
+                  <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                  <li class="dropdown-submenu">
+                    <a routerLink="/about-us">О нас</a>
+                  </li>
+                  <li class="dropdown-submenu">
+                    <a routerLink="/codes-okved">Коды ОКВЭД</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="dropdown simple-menu">
+                <a routerLink="/contact" role="button">контакты</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main-container>
+  <router-outlet></router-outlet>
+</main-container>  
+
+<footer class="footer" id="version2">
+  <div class="copyright ptb20">
+    <div class="container">
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <span>&copy;
+          <a href="/">
+            UrBase Info. Все права защищены</a>
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>

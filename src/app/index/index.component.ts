@@ -1,13 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.index.html',
-  styleUrls: ['./app.index.css']
+  selector: 'app-index',
+  templateUrl: './index.component.html',
+  styleUrls: []
 })
-export class AppIndex {
+export class IndexComponent implements OnInit {
+
   public constructor(private titleService: Title) {
     this.titleService.setTitle("UrBase Info Актуальная база юридических лиц РФ");
   }
+
+  ngOnInit() {
+  }
+
 }
