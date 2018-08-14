@@ -9,7 +9,7 @@ import { Title } from '@angular/platform-browser';
 export class AboutUsComponent implements OnInit {
 
   constructor(private titleService: Title) {
-    this.titleService.setTitle("О нас");
+    this.titleService.setTitle("UrBaseInfo - О нас");
   }
 
   ngOnInit() {

@@ -1,0 +1,71 @@
+<section class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <h4>Поиск юридических лиц</h4>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="main ptb30">
+    <div class="container">
+        <div class="col-md-12">
+            <div class="input-group input-group-lg">
+                <input class="form-control" id="tbxOkvedMainSearch" type="text" placeholder="Введите поисковый запрос" />
+                <span class="input-group-btn">
+                <button class="btn btn-my btn-blue btn-effect btn-responsive btn-my-lg" id="btnOkvedMainSearch">Найти </button>
+              </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="domain-page checkout pt20">
+    <div class="container">
+        <div class="col-md-12">
+            <div class="table-responsive-results">
+                <span>Найдено юридических лиц:&nbsp;</span>
+                <span class="table-responsive-results-count">{{CompaniesTotalCount}}</span>
+            </div>
+        </div>
+
+        <div class="col-md-12 domain-results mb30">
+            <div class="table-responsive">
+                <table class="table cart" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="onScroll()">
+                    <thead>
+                        <tr>
+                            <th>Наименование </th>
+                            <th>Отрасль </th>
+                            <th>Регион</th>
+                            <th>Руководитель</th>
+                            <th>Телефон</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="cart-item" *ngFor="let company of Companies">
+                            <td>
+                                <a href="/company/{{company.id}}" target="_blank">{{company.name}}></a>
+                            </td>
+                            <td>
+                                <span>{{company.area}}</span>
+                            </td>
+                            <td>
+                                <span>{{company.region}}</span>
+                            </td>
+                            <td>
+                                <span>{{company.head}}</span>
+                            </td>
+                            <td>
+                                <span>{{company.phone}}</span>
+                            </td>
+                            <td>
+                                <span>{{company.email}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
