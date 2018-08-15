@@ -9,7 +9,7 @@
         <div class="row mt20">
             <div class="col-md-8 col-md-offset-2 col-xs-12">
                 <div class="input-group input-group-lg">
-                    <input class="form-control" id="tbxOkvedMainSearch" type="text" placeholder="Введите поисковый запрос" [(ngModel)]="searchRequest" />
+                    <input class="form-control" id="tbxOkvedMainSearch" type="text" autocomplete="off" placeholder="Введите поисковый запрос" (keydown.enter)="onSearchPressKeyDown($event)" [(ngModel)]="searchRequest" />
                     <span class="input-group-btn">
                       <button class="btn btn-my btn-blue btn-effect btn-responsive btn-my-lg" 
                         id="btnOkvedMainSearch" (click)="btnSearchClicked();">Найти </button>
@@ -34,7 +34,7 @@
                         <strong>Москва и Московская область</strong>
                     </h5>
                     <p class="lead">Контактов: 1 270 000</p>
-                    <a href="/data" class="btn btn-my btn-blue btn-my-effect">Перейти</a>
+                    <a [routerLink]="['/data']" [queryParams]="{baseType: 'moscow'}" class="btn btn-my btn-blue btn-my-effect">Перейти</a>
                 </div>
             </div>
 
@@ -46,7 +46,7 @@
                         <strong>Санкт-Петербург и Ленинградская область</strong>
                     </h5>
                     <p class="lead">Контактов: 600 000</p>
-                    <a href="/data" class="btn btn-my btn-blue btn-my-effect">Перейти</a>
+                    <a [routerLink]="['/data']" [queryParams]="{baseType: 'spiter'}" class="btn btn-my btn-blue btn-my-effect">Перейти</a>
                 </div>
             </div>
 
@@ -58,7 +58,7 @@
                         <strong>Екатеринбург и Свердловская область</strong>
                     </h5>
                     <p class="lead">Контактов: 160 000</p>
-                    <a href="/data" class="btn btn-my btn-blue btn-my-effect">Перейти</a>
+                    <a [routerLink]="['/data']" [queryParams]="{baseType: 'eburg'}" class="btn btn-my btn-blue btn-my-effect">Перейти</a>
                 </div>
             </div>
         </div>
@@ -72,7 +72,7 @@
                         <strong>Строительство и благоустройство</strong>
                     </h5>
                     <p class="lead">Контактов: 11 000</p>
-                    <a href="/data" class="btn btn-my btn-blue btn-my-effect">Перейти</a>
+                    <a [routerLink]="['/data']" [queryParams]="{baseType: 'stroika'}" class="btn btn-my btn-blue btn-my-effect">Перейти</a>
                 </div>
             </div>
 
@@ -84,7 +84,7 @@
                         <strong>Торговля и деятельность в сфере продаж</strong>
                     </h5>
                     <p class="lead">Контактов: 55 000</p>
-                    <a href="/data" class="btn btn-my btn-blue btn-my-effect">Перейти</a>
+                    <a [routerLink]="['/data']" [queryParams]="{baseType: 'torg'}" class="btn btn-my btn-blue btn-my-effect">Перейти</a>
                 </div>
             </div>
 
@@ -96,14 +96,14 @@
                         <strong>Одежда и производство текстиля/ткани</strong>
                     </h5>
                     <p class="lead">Контактов: 5000</p>
-                    <a href="/data" class="btn btn-my btn-blue btn-my-effect">Перейти</a>
+                    <a [routerLink]="['/data']" [queryParams]="{baseType: 'odezhda'}" class="btn btn-my btn-blue btn-my-effect">Перейти</a>
                 </div>
             </div>
         </div>
 
         <div class="row mt40">
             <div class="col-md-12 text-center">
-                <a class="btn btn-my btn-blue btn-my-effect" href="/data">Показать остальные</a>
+                <a class="btn btn-my btn-blue btn-my-effect" routerLink="/data">Показать остальные</a>
             </div>
         </div>
     </div>
@@ -197,7 +197,7 @@
                 <a class="mailto" href="mailto:urbase.info@gmail.com">urbase.info@gmail.com</a>
             </div>
             <div class="col-md-4 cta">
-                <a class="btn btn-my btn-green btn-effect" href="/contact">Связаться с нами</a>
+                <a class="btn btn-my btn-green btn-effect" routerLink="/contact">Связаться с нами</a>
             </div>
         </div>
     </div>

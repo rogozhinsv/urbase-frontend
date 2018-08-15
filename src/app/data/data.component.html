@@ -11,9 +11,10 @@
     <div class="container">
         <div class="col-md-12">
             <div class="input-group input-group-lg">
-                <input class="form-control" id="tbxOkvedMainSearch" type="text" placeholder="Введите поисковый запрос" />
+                <input class="form-control" id="tbxOkvedMainSearch" type="text" autocomplete="off" placeholder="Введите поисковый запрос" (keydown.enter)="onSearchPressKeyDown($event)" [(ngModel)]="searchRequest" />
                 <span class="input-group-btn">
-                <button class="btn btn-my btn-blue btn-effect btn-responsive btn-my-lg" id="btnOkvedMainSearch">Найти </button>
+                <button class="btn btn-my btn-blue btn-effect btn-responsive btn-my-lg"
+                (click)="btnSearchClicked();" id="btnOkvedMainSearch">Найти </button>
               </span>
             </div>
         </div>
@@ -45,7 +46,7 @@
                     <tbody>
                         <tr class="cart-item" *ngFor="let company of Companies">
                             <td>
-                                <a href="/company/{{company.id}}" target="_blank">{{company.name}}></a>
+                                <a target="_blank" [routerLink]="['/company', company.id]">{{company.name}}</a>
                             </td>
                             <td>
                                 <span>{{company.area}}</span>

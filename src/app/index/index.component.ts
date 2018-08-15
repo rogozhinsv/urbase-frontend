@@ -18,8 +18,16 @@ export class IndexComponent implements OnInit {
   }
 
   public btnSearchClicked(): void {
+    this.routeToDataPage();
+  }
+
+  public onSearchPressKeyDown(event: any): void {
+    this.routeToDataPage();
+  }
+
+  private routeToDataPage() {
     if (this.searchRequest) {
-      this.router.navigate(["/data", this.searchRequest ]);
+      this.router.navigate(["/data"], { queryParams: { query: this.searchRequest } });
     }
     else {
       this.router.navigate(["/data"]);

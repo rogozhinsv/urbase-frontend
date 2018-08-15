@@ -1,0 +1,93 @@
+<section class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <h4>Информация о компании</h4>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="ptb30" *ngIf="company">
+    <div class="container">
+        <div class="col-md-12 cart-total">
+            <div class="table-responsive">
+                <h4 class="pb30">{{company.name}}</h4>
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td class="cart-product-name"><strong>Деятельность</strong></td>
+                        <td class="cart-product-name">
+                            <span>{{company.area}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cart-product-name"><strong>Регион</strong></td>
+                        <td class="cart-product-name"><span>
+                            {{company.region}}
+                        </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cart-product-name"><strong>Руководитель</strong></td>
+                        <td class="cart-product-name">
+                            <span>{{company.head}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cart-product-name"><strong>Телефон</strong></td>
+                        <td class="cart-product-name">
+                            <span>{{company.phone}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cart-product-name"><strong>Email</strong></td>
+                        <td class="cart-product-name">
+                            <span>{{company.Email}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cart-product-name"><strong>Дата регистрации</strong></td>
+                        <td class="cart-product-name">
+                            <span>{{company.registrationdate}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cart-product-name"><strong>Юридический адрес</strong></td>
+                        <td class="cart-product-name">
+                            <span>{{company.yraddress}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cart-product-name"><strong>Фактический адрес</strong></td>
+                        <td class="cart-product-name">
+                            <span>{{company.factaddress}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cart-product-name"><strong>ИНН</strong></td>
+                        <td class="cart-product-name">
+                            <span>{{company.inn}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cart-product-name"><strong>КПП</strong></td>
+                        <td class="cart-product-name"><span>{{company.kpp}}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="cart-product-name"><strong>ОГРН</strong></td>
+                        <td class="cart-product-name"><span>{{company.ogrn}}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="cart-product-name"><strong>ОКПО</strong></td>
+                        <td class="cart-product-name"><span>{{company.okpo}}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="cart-product-name"><strong>ОКАТО</strong></td>
+                        <td class="cart-product-name"><span>{{company.okato}}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

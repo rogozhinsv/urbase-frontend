@@ -10,13 +10,17 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FormsModule } from '@angular/forms';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { CompanyComponent } from './company/company.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AboutUsComponent,
     IndexComponent,
-    DataComponent
+    DataComponent,
+    NotFoundComponent,
+    CompanyComponent
   ],
   imports: [
     BrowserModule,

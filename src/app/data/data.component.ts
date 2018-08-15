@@ -25,13 +25,31 @@ export class DataComponent implements OnInit {
     return this._companies || [];
   }
 
+  public searchRequest: string;
+
   constructor(private titleService: Title, private router: Router, private route: ActivatedRoute,
     private http: HttpClient) {
     this.titleService.setTitle("UrBaseInfo -  Поиск юридических лиц");
 
     this._nextWcfUrl = environment.apiHost + "/companies";
-    if (this.route.queryParams["query"]) {
-      this._nextWcfUrl += "?query=" + this.route.queryParams["query"];
+    let queryParamValue = this.route.snapshot.queryParamMap.get("query");
+    let baseTypeParamValue = this.route.snapshot.queryParamMap.get("baseType");
+    if (queryParamValue) {
+      this.searchRequest = queryParamValue;
+      this._nextWcfUrl += "?query=" + queryParamValue;
+    }
+    else if (baseTypeParamValue) {
+      if (baseTypeParamValue == "moscow") {
+        this._nextWcfUrl += "?region_in=7,8";
+      }
+      else if(baseTypeParamValue == "spiter")
+      {
+        this._nextWcfUrl += "?region_in=15,6";
+      }
+      else if(baseTypeParamValue == "eburg")
+      {
+        this._nextWcfUrl += "?region_in=3";
+      }
     }
     this.loadData(this._nextWcfUrl);
   }
@@ -49,5 +67,15 @@ export class DataComponent implements OnInit {
       this._companies = this._companies.concat(data.results);
       this._nextWcfUrl = data.next;
     });
+  }
+
+  public btnSearchClicked(event: any): void {
+    this._nextWcfUrl = environment.apiHost + "/companies?query=" + this.searchRequest;
+    this._companies = [];
+    this.loadData(this._nextWcfUrl);
+  }
+
+  public onSearchPressKeyDown(event: any): void {
+    this.btnSearchClicked(event);
   }
 }
