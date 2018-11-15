@@ -15,6 +15,11 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 export class DataComponent implements OnInit {
   private _nextWcfUrl: string = "";
 
+  private _isLoading: boolean = true;
+  public get IsLoading(): boolean {
+    return this._isLoading;
+  }
+
   private _companiesTotalCount: number = 0;
   public get CompaniesTotalCount(): number {
     return this._companiesTotalCount;
@@ -62,10 +67,12 @@ export class DataComponent implements OnInit {
   }
 
   private loadData(wcfUrl: string): void {
+    this._isLoading = true;
     this.http.get<CompaniesResult>(wcfUrl).subscribe(data => {
       this._companiesTotalCount = data.count;
       this._companies = this._companies.concat(data.results);
       this._nextWcfUrl = data.next;
+      this._isLoading = false;
     });
   }
 

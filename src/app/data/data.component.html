@@ -24,13 +24,16 @@
 <section class="domain-page checkout pt20">
     <div class="container">
         <div class="col-md-12">
-            <div class="table-responsive-results">
+            <div *ngIf="!IsLoading" class="table-responsive-results">
                 <span>Найдено юридических лиц:&nbsp;</span>
                 <span class="table-responsive-results-count">{{CompaniesTotalCount}}</span>
             </div>
+            <div *ngIf="IsLoading" class="table-responsive-results">
+                <span>Загрузка...</span>
+            </div>
         </div>
 
-        <div class="col-md-12 domain-results mb30">
+        <div class="col-md-12 domain-results mb30" *ngIf="!IsLoading || Companies.length > 0">
             <div class="table-responsive">
                 <table class="table cart" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="onScroll()">
                     <thead>
