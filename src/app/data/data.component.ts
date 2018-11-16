@@ -9,6 +9,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { OkvedsResult } from '../models/okveds-result';
 import { DictionaryItem } from '../models/dictionare-item';
 import { RegionsResult } from '../models/regions-result';
+import { DataRequestService } from '../services/data-request.service';
 
 @Component({
   selector: 'app-data',
@@ -38,6 +39,16 @@ export class DataComponent implements OnInit {
     return this._okveds || [];
   }
 
+  private _selectedOkvedsIds: number[] = [];
+  public get SelectedOkvedIds(): number[] {
+    return this._selectedOkvedsIds || [];
+  }
+
+  private _selectedRegionsIds: number[] = [];
+  public get SelectedRegionsIds(): number[] {
+    return this._selectedRegionsIds || [];
+  }
+
   private _regions: DictionaryItem[];
   public get Regions(): DictionaryItem[] {
     return this._regions || [];
@@ -45,8 +56,11 @@ export class DataComponent implements OnInit {
 
   public searchRequest: string;
 
-  constructor(private titleService: Title, private router: Router, private route: ActivatedRoute,
-    private http: HttpClient) {
+  constructor(private titleService: Title,
+    private router: Router,
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private dataRequestService: DataRequestService) {
     this.titleService.setTitle("UrBaseInfo -  Поиск юридических лиц");
 
     this.retrieveAllOkveds();
@@ -57,36 +71,46 @@ export class DataComponent implements OnInit {
     let baseTypeParamValue = this.route.snapshot.queryParamMap.get("baseType");
     if (queryParamValue) {
       this.searchRequest = queryParamValue;
-      this._nextWcfUrl += "?query=" + queryParamValue;
+      this.loadData(this.searchRequest, [], [], true);
     }
     else if (baseTypeParamValue) {
       if (baseTypeParamValue == "moscow") {
-        this._nextWcfUrl += "?region_in=7,8";
+        this.loadData(this.searchRequest, [7, 8], [], true);
       }
       else if (baseTypeParamValue == "spiter") {
-        this._nextWcfUrl += "?region_in=15,6";
+        this.loadData(this.searchRequest, [6, 15], [], true);
       }
       else if (baseTypeParamValue == "eburg") {
-        this._nextWcfUrl += "?region_in=3";
+        this.loadData(this.searchRequest, [3], [], true);
       }
     }
-    this.loadData(this._nextWcfUrl);
   }
 
   ngOnInit() {
   }
 
   public onScroll(): void {
-    this.loadData(this._nextWcfUrl);
-  }
-
-  private loadData(wcfUrl: string): void {
     this._isLoading = true;
-    this.http.get<CompaniesResult>(wcfUrl).subscribe(data => {
+    this.dataRequestService.getCompanies(this._nextWcfUrl).subscribe(data => {
       this._companiesTotalCount = data.count;
       this._companies = this._companies.concat(data.results);
       this._nextWcfUrl = data.next;
       this._isLoading = false;
+    });
+  }
+
+  private loadData(filter: string, regionsIds: number[], okvedsIds: number[], isFirstLoad: boolean): void {
+    this._isLoading = true;
+    this.dataRequestService.getCompaniesByFilter(filter, regionsIds, okvedsIds).subscribe(data => {
+      this._companiesTotalCount = data.count;
+      this._companies = data.results;
+      this._nextWcfUrl = data.next;
+      this._isLoading = false;
+
+      if (isFirstLoad) {
+        this._selectedOkvedsIds = data.okveds;
+        this._selectedRegionsIds = data.regions;
+      }
     });
   }
 
@@ -105,12 +129,39 @@ export class DataComponent implements OnInit {
   }
 
   public btnSearchClicked(event: any): void {
-    this._nextWcfUrl = environment.apiHost + "/companies?query=" + this.searchRequest;
     this._companies = [];
-    this.loadData(this._nextWcfUrl);
+    this.loadData(this.searchRequest, this.SelectedRegionsIds, this.SelectedOkvedIds, false);
   }
 
   public onSearchPressKeyDown(event: any): void {
     this.btnSearchClicked(event);
+  }
+
+  public isSelectedOkved(item: DictionaryItem): boolean {
+    return this.SelectedOkvedIds.some(x => x == item.id);
+  }
+
+  public isSelectedRegion(item: DictionaryItem): boolean {
+    return this.SelectedRegionsIds.some(x => x == item.id);
+  }
+
+  public cbxRegionChanged(event: any, item: DictionaryItem): void {
+    this.updateSelectedIdsArray(this.SelectedRegionsIds, item);
+    this.loadData(this.searchRequest, this.SelectedRegionsIds, this.SelectedOkvedIds, false);
+  }
+
+  public cbxOkvedChanged(event: any, item: DictionaryItem): void {
+    this.updateSelectedIdsArray(this.SelectedRegionsIds, item);
+    this.loadData(this.searchRequest, this.SelectedRegionsIds, this.SelectedOkvedIds, false);
+  }
+
+  private updateSelectedIdsArray(array: number[], item: DictionaryItem): void {
+    let index: number = array.indexOf(item.id);
+    if (index !== -1) {
+      array.splice(index, 1);
+    }
+    else {
+      array.push(item.id);
+    }
   }
 }

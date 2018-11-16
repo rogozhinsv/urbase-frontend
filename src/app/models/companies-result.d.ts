@@ -5,6 +5,6 @@ export interface CompaniesResult {
     count: number;
     next: string;
     results: Company[];
-    regions: any[];
-    okveds: DictionaryItem[];
+    regions: number[];
+    okveds: number[];
 }

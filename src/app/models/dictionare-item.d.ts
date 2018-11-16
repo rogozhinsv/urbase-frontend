@@ -3,5 +3,4 @@ export interface DictionaryItem {
     code: string;
     url: string;
     title: string;
-    checked: string;
 }

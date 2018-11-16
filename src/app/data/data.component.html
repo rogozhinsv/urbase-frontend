@@ -34,8 +34,8 @@
             </div>
         </div>
 
-        <div class="col-md-9 domain-results mb30" *ngIf="!IsLoading || Companies.length > 0">
-            <div class="table-responsive">
+        <div class="col-md-9 domain-results mb30">
+            <div class="table-responsive" *ngIf="!IsLoading || Companies.length > 0">
                 <table class="table cart" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="onScroll()">
                     <thead>
                         <tr>
@@ -79,7 +79,8 @@
                     <h4>Деятельность</h4>
                     <ul id="ulDataPageOkved">
                         <li *ngFor="let okved of Okveds; let i = index">
-                            <input type="checkbox" [(ngModel)]="okved.checked" [name]="okved.title" [value]="okved.id" id="okved{{i}}" />
+                            <input type="checkbox" [checked]="isSelectedOkved(okved)" [name]="okved.title" 
+                                [value]="okved.id" id="okved{{i}}" (change)="cbxOkvedChanged($event, okved)" />
                             <label for="okved{{i}}">
                                 {{okved.title}}
                             </label>
@@ -93,7 +94,8 @@
                         <h4>Регионы</h4>
                         <ul id="ulDataPageRegions">
                             <li *ngFor="let region of Regions; let i = index">
-                                <input type="checkbox" [(ngModel)]="region.checked" [name]="region.title" [value]="region.id" id="region{{i}}" />
+                                <input type="checkbox" [checked]="isSelectedRegion(region)" [name]="region.title" 
+                                    [value]="region.id" id="region{{i}}" (change)="cbxRegionChanged($event, region)" />
                                 <label for="region{{i}}">
                                     {{region.title}}
                                 </label>
