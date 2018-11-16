@@ -6,6 +6,9 @@ import { HttpClient } from '@angular/common/http';
 import { Company } from '../models/company';
 import { CompaniesResult } from '../models/companies-result';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { OkvedsResult } from '../models/okveds-result';
+import { DictionaryItem } from '../models/dictionare-item';
+import { RegionsResult } from '../models/regions-result';
 
 @Component({
   selector: 'app-data',
@@ -30,11 +33,24 @@ export class DataComponent implements OnInit {
     return this._companies || [];
   }
 
+  private _okveds: DictionaryItem[];
+  public get Okveds(): DictionaryItem[] {
+    return this._okveds || [];
+  }
+
+  private _regions: DictionaryItem[];
+  public get Regions(): DictionaryItem[] {
+    return this._regions || [];
+  }
+
   public searchRequest: string;
 
   constructor(private titleService: Title, private router: Router, private route: ActivatedRoute,
     private http: HttpClient) {
     this.titleService.setTitle("UrBaseInfo -  Поиск юридических лиц");
+
+    this.retrieveAllOkveds();
+    this.retrieveAllRegions();
 
     this._nextWcfUrl = environment.apiHost + "/companies";
     let queryParamValue = this.route.snapshot.queryParamMap.get("query");
@@ -47,12 +63,10 @@ export class DataComponent implements OnInit {
       if (baseTypeParamValue == "moscow") {
         this._nextWcfUrl += "?region_in=7,8";
       }
-      else if(baseTypeParamValue == "spiter")
-      {
+      else if (baseTypeParamValue == "spiter") {
         this._nextWcfUrl += "?region_in=15,6";
       }
-      else if(baseTypeParamValue == "eburg")
-      {
+      else if (baseTypeParamValue == "eburg") {
         this._nextWcfUrl += "?region_in=3";
       }
     }
@@ -73,6 +87,20 @@ export class DataComponent implements OnInit {
       this._companies = this._companies.concat(data.results);
       this._nextWcfUrl = data.next;
       this._isLoading = false;
+    });
+  }
+
+  private retrieveAllOkveds(): void {
+    let wcfUrl = environment.apiHost + "/okved?limit=3000";
+    this.http.get<OkvedsResult>(wcfUrl).subscribe(data => {
+      this._okveds = data.results;
+    });
+  }
+
+  private retrieveAllRegions(): void {
+    let wcfUrl = environment.apiHost + "/regions?limit=200";
+    this.http.get<RegionsResult>(wcfUrl).subscribe(data => {
+      this._regions = data.results;
     });
   }
 

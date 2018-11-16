@@ -11,11 +11,12 @@
     <div class="container">
         <div class="col-md-12">
             <div class="input-group input-group-lg">
-                <input class="form-control" id="tbxOkvedMainSearch" type="text" autocomplete="off" placeholder="Введите поисковый запрос" (keydown.enter)="onSearchPressKeyDown($event)" [(ngModel)]="searchRequest" />
+                <input class="form-control" id="tbxOkvedMainSearch" type="text" autocomplete="off" placeholder="Введите поисковый запрос"
+                    (keydown.enter)="onSearchPressKeyDown($event)" [(ngModel)]="searchRequest" />
                 <span class="input-group-btn">
-                <button class="btn btn-my btn-blue btn-effect btn-responsive btn-my-lg"
-                (click)="btnSearchClicked();" id="btnOkvedMainSearch">Найти </button>
-              </span>
+                    <button class="btn btn-my btn-blue btn-effect btn-responsive btn-my-lg" (click)="btnSearchClicked();"
+                        id="btnOkvedMainSearch">Найти </button>
+                </span>
             </div>
         </div>
     </div>
@@ -33,7 +34,7 @@
             </div>
         </div>
 
-        <div class="col-md-12 domain-results mb30" *ngIf="!IsLoading || Companies.length > 0">
+        <div class="col-md-9 domain-results mb30" *ngIf="!IsLoading || Companies.length > 0">
             <div class="table-responsive">
                 <table class="table cart" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="onScroll()">
                     <thead>
@@ -71,5 +72,35 @@
                 </table>
             </div>
         </div>
+
+        <aside class="col-md-3">
+            <div class="domain-sidebar shadow-hover mb20">
+                <div class="extensions">
+                    <h4>Деятельность</h4>
+                    <ul id="ulDataPageOkved">
+                        <li *ngFor="let okved of Okveds; let i = index">
+                            <input type="checkbox" [(ngModel)]="okved.checked" [name]="okved.title" [value]="okved.id" id="okved{{i}}" />
+                            <label for="okved{{i}}">
+                                {{okved.title}}
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="domain-sidebar shadow-hover mb20">
+                    <div class="extensions">
+                        <h4>Регионы</h4>
+                        <ul id="ulDataPageRegions">
+                            <li *ngFor="let region of Regions; let i = index">
+                                <input type="checkbox" [(ngModel)]="region.checked" [name]="region.title" [value]="region.id" id="region{{i}}" />
+                                <label for="region{{i}}">
+                                    {{region.title}}
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+        </aside>
     </div>
 </section>
