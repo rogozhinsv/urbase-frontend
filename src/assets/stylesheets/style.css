@@ -3227,12 +3227,6 @@ section.blog-listing .pagination {
 }
 
 .blog-sidebar {
-    background: #f6f6f6;
-    padding: 40px 10px;
-    border: 1px solid #e3e3e3;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px
 }
 
 .blog-sidebar .widget-title {
@@ -3299,21 +3293,20 @@ section.blog-listing .pagination {
 
 .blog-sidebar .tag-wrapper a {
     color: #999;
-    font-size: 16px;
+    font-size: 13px;
     background: #fff;
     border: 1px solid #e3e3e3;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    padding: 10px 15px;
-    line-height: 50px;
-    text-transform: capitalize;
-    text-transform: capitalize;
-    margin-right: 5px;
-    white-space: nowrap
+    padding: 2px 4px;
+    line-height: 20px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    display: inline-block;
 }
 
-.blog-sidebar .tag-wrapper a:hover {
+.blog-sidebar .tag-wrapper a:hover, .blog-sidebar .tag-wrapper a.tag-link_selected {
     background-color: #4191cf;
     color: #fff
 }

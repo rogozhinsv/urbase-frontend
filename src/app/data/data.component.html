@@ -34,75 +34,68 @@
             </div>
         </div>
 
-        <div class="col-md-9 domain-results mb30">
-            <div class="table-responsive" *ngIf="!IsLoading || Companies.length > 0">
-                <table class="table cart" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="onScroll()">
-                    <thead>
-                        <tr>
-                            <th>Наименование </th>
-                            <th>Отрасль </th>
-                            <th>Регион</th>
-                            <th>Руководитель</th>
-                            <th>Телефон</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="cart-item" *ngFor="let company of Companies">
-                            <td>
-                                <a target="_blank" [routerLink]="['/company', company.id]">{{company.name}}</a>
-                            </td>
-                            <td>
-                                <span>{{company.area}}</span>
-                            </td>
-                            <td>
-                                <span>{{company.region}}</span>
-                            </td>
-                            <td>
-                                <span>{{company.head}}</span>
-                            </td>
-                            <td>
-                                <span>{{company.phone}}</span>
-                            </td>
-                            <td>
-                                <span>{{company.email}}</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <aside class="col-md-3">
-            <div class="domain-sidebar shadow-hover mb20">
-                <div class="extensions">
-                    <h4>Деятельность</h4>
-                    <ul id="ulDataPageOkved">
-                        <li *ngFor="let okved of Okveds; let i = index">
-                            <input type="checkbox" [checked]="isSelectedOkved(okved)" [name]="okved.title" 
-                                [value]="okved.id" id="okved{{i}}" (change)="cbxOkvedChanged($event, okved)" />
-                            <label for="okved{{i}}">
-                                {{okved.title}}
-                            </label>
-                        </li>
-                    </ul>
+        <div class="row">
+            <div class="col-md-8 domain-results mb30">
+                <div class="table-responsive" *ngIf="!IsLoading || Companies.length > 0">
+                    <table class="table cart" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="onScroll()">
+                        <thead>
+                            <tr>
+                                <th>Наименование </th>
+                                <th>Отрасль </th>
+                                <th>Регион</th>
+                                <th>Руководитель</th>
+                                <th>Телефон</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="cart-item" *ngFor="let company of Companies">
+                                <td>
+                                    <a target="_blank" [routerLink]="['/company', company.id]">{{company.name}}</a>
+                                </td>
+                                <td>
+                                    <span>{{company.area}}</span>
+                                </td>
+                                <td>
+                                    <span>{{company.region}}</span>
+                                </td>
+                                <td>
+                                    <span>{{company.head}}</span>
+                                </td>
+                                <td>
+                                    <span>{{company.phone}}</span>
+                                </td>
+                                <td>
+                                    <span>{{company.email}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="domain-sidebar shadow-hover mb20">
-                    <div class="extensions">
-                        <h4>Регионы</h4>
-                        <ul id="ulDataPageRegions">
-                            <li *ngFor="let region of Regions; let i = index">
-                                <input type="checkbox" [checked]="isSelectedRegion(region)" [name]="region.title" 
-                                    [value]="region.id" id="region{{i}}" (change)="cbxRegionChanged($event, region)" />
-                                <label for="region{{i}}">
-                                    {{region.title}}
-                                </label>
-                            </li>
-                        </ul>
+            <div class="col-md-4 blog-sidebar">
+                <div>
+                    <h4>Регионы</h4>
+
+                    <!-- Tags Wrapper -->
+                    <div class="tag-wrapper mt10">
+                        <a href="#" *ngFor="let region of FoundedRegionIds" (click)="onSelectRegion($event, region);"
+                            class="tag-link" [class.tag-link_selected]="region.checked" [title]="region.title">{{region.title
+                            | truncate:[12, '...']}}</a>
                     </div>
                 </div>
-        </aside>
+
+                <div class="mt20">
+                    <h4>Деятельность</h4>
+
+                    <!-- Tags Wrapper -->
+                    <div class="tag-wrapper mt10">
+                        <a href="#" *ngFor="let okved of FoundedOkvedIds" (click)="onSelectOkved($event, okved);"
+                            class="tag-link" [class.tag-link_selected]="okved.checked" [title]="okved.title">{{okved.title}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>

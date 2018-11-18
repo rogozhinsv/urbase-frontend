@@ -18,6 +18,8 @@ import { DataRequestService } from '../services/data-request.service';
 })
 export class DataComponent implements OnInit {
   private _nextWcfUrl: string = "";
+  private _selectedRegionIds: number[] = [];
+  private _selectedOkvedIds: number[] = [];
 
   private _isLoading: boolean = true;
   public get IsLoading(): boolean {
@@ -34,24 +36,14 @@ export class DataComponent implements OnInit {
     return this._companies || [];
   }
 
-  private _okveds: DictionaryItem[];
-  public get Okveds(): DictionaryItem[] {
-    return this._okveds || [];
+  private _foundedOkvedIds: DictionaryItem[] = [];
+  public get FoundedOkvedIds(): DictionaryItem[] {
+    return this._foundedOkvedIds || [];
   }
 
-  private _selectedOkvedsIds: number[] = [];
-  public get SelectedOkvedIds(): number[] {
-    return this._selectedOkvedsIds || [];
-  }
-
-  private _selectedRegionsIds: number[] = [];
-  public get SelectedRegionsIds(): number[] {
-    return this._selectedRegionsIds || [];
-  }
-
-  private _regions: DictionaryItem[];
-  public get Regions(): DictionaryItem[] {
-    return this._regions || [];
+  private _foundedRegionIds: DictionaryItem[] = [];
+  public get FoundedRegionIds(): DictionaryItem[] {
+    return this._foundedRegionIds || [];
   }
 
   public searchRequest: string;
@@ -63,25 +55,25 @@ export class DataComponent implements OnInit {
     private dataRequestService: DataRequestService) {
     this.titleService.setTitle("UrBaseInfo -  Поиск юридических лиц");
 
-    this.retrieveAllOkveds();
-    this.retrieveAllRegions();
-
     this._nextWcfUrl = environment.apiHost + "/companies";
     let queryParamValue = this.route.snapshot.queryParamMap.get("query");
     let baseTypeParamValue = this.route.snapshot.queryParamMap.get("baseType");
     if (queryParamValue) {
       this.searchRequest = queryParamValue;
-      this.loadData(this.searchRequest, [], [], true);
+      this.loadData(true);
     }
     else if (baseTypeParamValue) {
       if (baseTypeParamValue == "moscow") {
-        this.loadData(this.searchRequest, [7, 8], [], true);
+        this._selectedRegionIds = [7, 8];
+        this.loadData(true);
       }
       else if (baseTypeParamValue == "spiter") {
-        this.loadData(this.searchRequest, [6, 15], [], true);
+        this._selectedRegionIds = [6, 15];
+        this.loadData(true);
       }
       else if (baseTypeParamValue == "eburg") {
-        this.loadData(this.searchRequest, [3], [], true);
+        this._selectedRegionIds = [3];
+        this.loadData(true);
       }
     }
   }
@@ -99,60 +91,49 @@ export class DataComponent implements OnInit {
     });
   }
 
-  private loadData(filter: string, regionsIds: number[], okvedsIds: number[], isFirstLoad: boolean): void {
+  private loadData(isFirstLoad: boolean): void {
     this._isLoading = true;
-    this.dataRequestService.getCompaniesByFilter(filter, regionsIds, okvedsIds).subscribe(data => {
+    this.dataRequestService.getCompaniesByFilter(this.searchRequest, this._selectedRegionIds, this._selectedOkvedIds).subscribe(data => {
       this._companiesTotalCount = data.count;
       this._companies = data.results;
       this._nextWcfUrl = data.next;
       this._isLoading = false;
 
       if (isFirstLoad) {
-        this._selectedOkvedsIds = data.okveds;
-        this._selectedRegionsIds = data.regions;
+        this.dataRequestService.getRegions(data.regions).subscribe(data => this._foundedRegionIds = data.results);
+        this.dataRequestService.getAllOkveds().subscribe(okvedsResults => {
+          let allItems = okvedsResults.results;
+          this._foundedOkvedIds = allItems.filter(x => data.okveds.some(y => y == x.id));
+        });
       }
-    });
-  }
-
-  private retrieveAllOkveds(): void {
-    let wcfUrl = environment.apiHost + "/okved?limit=3000";
-    this.http.get<OkvedsResult>(wcfUrl).subscribe(data => {
-      this._okveds = data.results;
-    });
-  }
-
-  private retrieveAllRegions(): void {
-    let wcfUrl = environment.apiHost + "/regions?limit=200";
-    this.http.get<RegionsResult>(wcfUrl).subscribe(data => {
-      this._regions = data.results;
     });
   }
 
   public btnSearchClicked(event: any): void {
     this._companies = [];
-    this.loadData(this.searchRequest, this.SelectedRegionsIds, this.SelectedOkvedIds, false);
+    this._selectedOkvedIds = [];
+    this._selectedRegionIds = [];
+    this.loadData(false);
   }
 
   public onSearchPressKeyDown(event: any): void {
     this.btnSearchClicked(event);
   }
 
-  public isSelectedOkved(item: DictionaryItem): boolean {
-    return this.SelectedOkvedIds.some(x => x == item.id);
+  public onSelectRegion(event: any, item: DictionaryItem): void {
+    item.checked = !item.checked;
+    this.updateSelectedIdsArray(this._selectedRegionIds, item);
+    this.loadData(false);
+
+    event.preventDefault();
   }
 
-  public isSelectedRegion(item: DictionaryItem): boolean {
-    return this.SelectedRegionsIds.some(x => x == item.id);
-  }
+  public onSelectOkved(event: any, item: DictionaryItem): void {
+    item.checked = !item.checked;
+    this.updateSelectedIdsArray(this._selectedOkvedIds, item);
+    this.loadData(false);
 
-  public cbxRegionChanged(event: any, item: DictionaryItem): void {
-    this.updateSelectedIdsArray(this.SelectedRegionsIds, item);
-    this.loadData(this.searchRequest, this.SelectedRegionsIds, this.SelectedOkvedIds, false);
-  }
-
-  public cbxOkvedChanged(event: any, item: DictionaryItem): void {
-    this.updateSelectedIdsArray(this.SelectedRegionsIds, item);
-    this.loadData(this.searchRequest, this.SelectedRegionsIds, this.SelectedOkvedIds, false);
+    event.preventDefault();
   }
 
   private updateSelectedIdsArray(array: number[], item: DictionaryItem): void {

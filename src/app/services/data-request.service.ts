@@ -3,12 +3,36 @@ import { CompaniesResult } from "../models/companies-result";
 import { environment } from "../../environments/environment.prod";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { RegionsResult } from "../models/regions-result";
+import { OkvedsResult } from "../models/okveds-result";
 
 @Injectable({
     providedIn: "root"
 })
 export class DataRequestService {
     constructor(private http: HttpClient) { }
+
+    public getRegions(ids: number[]): Observable<RegionsResult> {
+        let url = environment.apiHost + "/regions?limit=500";
+        if (ids.length > 0) {
+            url += "&id=" + ids.join(",");
+        }
+
+        return this.http.get<RegionsResult>(url);
+    }
+
+    public getOkveds(ids: number[]): Observable<OkvedsResult> {
+        let url = environment.apiHost + "/okved?limit=5000";
+        if (ids.length > 0) {
+            url += "&id=" + ids.join(",");
+        }
+
+        return this.http.get<OkvedsResult>(url);
+    }
+
+    public getAllOkveds(): Observable<OkvedsResult> {
+        return this.http.get<OkvedsResult>(environment.apiHost + "/okved?limit=5000");
+    }
 
     public getCompanies(url: string): Observable<CompaniesResult> {
         return this.http.get<CompaniesResult>(url);
@@ -31,6 +55,7 @@ export class DataRequestService {
             else {
                 url += "&" + urlPart;
             }
+            emptyRequest = false;
         }
 
         if (okvedIds.length > 0) {
@@ -41,6 +66,7 @@ export class DataRequestService {
             else {
                 url += "&" + urlPart;
             }
+            emptyRequest = false;
         }
 
         return this.http.get<CompaniesResult>(url);

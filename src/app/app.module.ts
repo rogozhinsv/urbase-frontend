@@ -12,6 +12,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CompanyComponent } from './company/company.component';
+import { TruncatePipe } from './pipes/truncate.pipe';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { CompanyComponent } from './company/company.component';
     IndexComponent,
     DataComponent,
     NotFoundComponent,
-    CompanyComponent
+    CompanyComponent,
+    TruncatePipe
   ],
   imports: [
     BrowserModule,
