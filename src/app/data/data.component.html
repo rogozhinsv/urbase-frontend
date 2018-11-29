@@ -14,7 +14,7 @@
                 <input class="form-control" id="tbxOkvedMainSearch" type="text" autocomplete="off" placeholder="Введите поисковый запрос"
                     (keydown.enter)="onSearchPressKeyDown($event)" [(ngModel)]="searchRequest" />
                 <span class="input-group-btn">
-                    <button class="btn btn-my btn-blue btn-effect btn-responsive btn-my-lg" (click)="btnSearchClicked();"
+                    <button class="btn btn-my btn-blue btn-effect btn-responsive btn-my-lg" (click)="btnSearchClicked($event);"
                         id="btnOkvedMainSearch">Найти </button>
                 </span>
             </div>

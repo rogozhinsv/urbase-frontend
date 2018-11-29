@@ -1,16 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../environments/environment.prod';
-import { Router, Route, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Company } from '../models/company';
-import { CompaniesResult } from '../models/companies-result';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { OkvedsResult } from '../models/okveds-result';
 import { DictionaryItem } from '../models/dictionare-item';
-import { RegionsResult } from '../models/regions-result';
 import { DataRequestService } from '../services/data-request.service';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-data',
