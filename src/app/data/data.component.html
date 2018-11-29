@@ -35,8 +35,8 @@
         </div>
 
         <div class="row">
-            <div class="col-md-8 domain-results mb30">
-                <div class="table-responsive" *ngIf="!IsLoading || Companies.length > 0">
+            <div class="col-md-9 domain-results mb30">
+                <div class="table-responsive">
                     <table class="table cart" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="onScroll()">
                         <thead>
                             <tr>
@@ -74,26 +74,47 @@
                 </div>
             </div>
 
-            <div class="col-md-4 blog-sidebar">
-                <div>
+            <div class="col-md-3 blog-sidebar mb30">
+                <div style="padding-left: 10px;">
                     <h4>Регионы</h4>
 
-                    <!-- Tags Wrapper -->
-                    <div class="tag-wrapper mt10">
-                        <a href="#" *ngFor="let region of FoundedRegionIds" (click)="onSelectRegion($event, region);"
-                            class="tag-link" [class.tag-link_selected]="region.checked" [title]="region.title">{{region.title
-                            | truncate:[12, '...']}}</a>
-                    </div>
+                    <div class="extensions">
+                        <input type="text" class="mt10" [(ngModel)]="regionsFilter" *ngIf="IsVisibleAllRegions" />
+
+                        <ul>
+                            <li *ngFor="let region of FoundedRegionItems | orderBy: 'title'; let i = index;">
+                                <input type="checkbox" [checked]="region.checked" [name]="region.title" 
+                                    [value]="region.id" id="region{{i}}" (change)="onSelectRegion($event, region)" />
+                                <label for="region{{i}}">
+                                    {{region.title}}
+                                </label>
+                             </li>
+                         </ul>
+
+                         <a href="#" *ngIf="!IsVisibleAllRegions && FoundedRegionItemsCount > 10" (click)="onShowAllRegions_Clicked($event)">Показать все</a>
+                         <a href="#" *ngIf="IsVisibleAllRegions" (click)="onHideAllRegions_Clicked($event)">Скрыть</a>
+                     </div>
                 </div>
 
-                <div class="mt20">
+                <div class="mt30" style="padding-left: 10px;">
                     <h4>Деятельность</h4>
 
-                    <!-- Tags Wrapper -->
-                    <div class="tag-wrapper mt10">
-                        <a href="#" *ngFor="let okved of FoundedOkvedIds" (click)="onSelectOkved($event, okved);"
-                            class="tag-link" [class.tag-link_selected]="okved.checked" [title]="okved.title">{{okved.title}}</a>
-                    </div>
+                    <div class="extensions">
+                            <input type="text" class="mt10" [(ngModel)]="okvedFilter" *ngIf="IsVisibleAllOkveds" />
+    
+                            <ul>
+                                <li *ngFor="let okved of FoundedOkvedItems | orderBy: 'title'; let i = index;">
+                                    <input type="checkbox" [checked]="okved.checked" [name]="okved.title" 
+                                        [value]="okved.id" id="okved{{i}}" (change)="onSelectOkved($event, okved)" />
+                                    <label for="okved{{i}}" [title]="okved.title">
+                                        {{okved.title | truncate:[50, '...']}}
+                                    </label>
+                                 </li>
+                             </ul>
+    
+                             <a href="#" *ngIf="!IsVisibleAllOkveds && FoundedOkvedItemsCount > 10" (click)="onShowAllOkveds_Clicked($event)">Показать все</a>
+                             <a href="#" *ngIf="IsVisibleAllOkveds" (click)="onHideAllOkveds_Clicked($event)">Скрыть</a>
+                         </div>
                 </div>
             </div>
         </div>

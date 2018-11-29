@@ -2874,6 +2874,13 @@ aside .banner {
     border-bottom: 7px solid #4191cf
 }
 
+.blog-sidebar .extensions ul {
+    padding: 0;
+    margin-top: 15px;
+    overflow-y: auto;
+    max-height: 400px;
+}
+
 .live-search-box {
     padding: 15px
 }

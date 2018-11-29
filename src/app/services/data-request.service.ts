@@ -34,6 +34,10 @@ export class DataRequestService {
         return this.http.get<OkvedsResult>(environment.apiHost + "/okved?limit=5000");
     }
 
+    public getAllRegions(): Observable<RegionsResult> {
+        return this.http.get<RegionsResult>(environment.apiHost + "/regions?limit=500");
+    }
+
     public getCompanies(url: string): Observable<CompaniesResult> {
         return this.http.get<CompaniesResult>(url);
     }

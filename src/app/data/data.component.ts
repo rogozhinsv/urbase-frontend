@@ -10,6 +10,7 @@ import { OkvedsResult } from '../models/okveds-result';
 import { DictionaryItem } from '../models/dictionare-item';
 import { RegionsResult } from '../models/regions-result';
 import { DataRequestService } from '../services/data-request.service';
+import { forkJoin, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-data',
@@ -18,8 +19,31 @@ import { DataRequestService } from '../services/data-request.service';
 })
 export class DataComponent implements OnInit {
   private _nextWcfUrl: string = "";
+  private _limitRegions: number = 10;
+  private _limitOkveds: number = 10;
+
+  private _isVisibleAllRegions: boolean = false;
+  public get IsVisibleAllRegions(): boolean {
+    return this._isVisibleAllRegions;
+  }
+
+  private _isVisibleAllOkveds: boolean = false;
+  public get IsVisibleAllOkveds(): boolean {
+    return this._isVisibleAllOkveds;
+  }
+
   private _selectedRegionIds: number[] = [];
+  public get SelectedRegionIds(): number[] {
+    return this._selectedRegionIds || [];
+  }
+
   private _selectedOkvedIds: number[] = [];
+  public get SelectedOkvedIds(): number[] {
+    return this._selectedOkvedIds || [];
+  }
+
+  private _allOkvedsItems: DictionaryItem[] = [];
+  private _allRegionItems: DictionaryItem[] = [];
 
   private _isLoading: boolean = true;
   public get IsLoading(): boolean {
@@ -36,17 +60,33 @@ export class DataComponent implements OnInit {
     return this._companies || [];
   }
 
-  private _foundedOkvedIds: DictionaryItem[] = [];
-  public get FoundedOkvedIds(): DictionaryItem[] {
-    return this._foundedOkvedIds || [];
+  private _foundedOkvedItems: DictionaryItem[] = [];
+  public get FoundedOkvedItems(): DictionaryItem[] {
+    let items = this._foundedOkvedItems || []; 
+    if (this.okvedFilter) {
+      items = items.filter(x => x.title.search(new RegExp(this.okvedFilter, "i")) != -1);
+    }
+    return items.slice(0, this._limitOkveds);
+  }
+  public get FoundedOkvedItemsCount(): number {
+    return (this._foundedOkvedItems || []).length;
   }
 
-  private _foundedRegionIds: DictionaryItem[] = [];
-  public get FoundedRegionIds(): DictionaryItem[] {
-    return this._foundedRegionIds || [];
+  private _foundedRegionItems: DictionaryItem[] = [];
+  public get FoundedRegionItems(): DictionaryItem[] {
+    let items = this._foundedRegionItems || []; 
+    if (this.regionsFilter) {
+      items = items.filter(x => x.title.search(new RegExp(this.regionsFilter, "i")) != -1);
+    }
+    return items.slice(0, this._limitRegions);
+  }
+  public get FoundedRegionItemsCount(): number {
+    return (this._foundedRegionItems || []).length;
   }
 
+  public regionsFilter: string;
   public searchRequest: string;
+  private okvedFilter: string;
 
   constructor(private titleService: Title,
     private router: Router,
@@ -60,22 +100,26 @@ export class DataComponent implements OnInit {
     let baseTypeParamValue = this.route.snapshot.queryParamMap.get("baseType");
     if (queryParamValue) {
       this.searchRequest = queryParamValue;
-      this.loadData(true);
     }
     else if (baseTypeParamValue) {
       if (baseTypeParamValue == "moscow") {
         this._selectedRegionIds = [7, 8];
-        this.loadData(true);
       }
       else if (baseTypeParamValue == "spiter") {
         this._selectedRegionIds = [6, 15];
-        this.loadData(true);
       }
       else if (baseTypeParamValue == "eburg") {
         this._selectedRegionIds = [3];
-        this.loadData(true);
       }
     }
+
+    forkJoin(this.dataRequestService.getAllRegions(),
+      this.dataRequestService.getAllOkveds()).subscribe(data => {
+        this._allOkvedsItems = data[1].results;
+        this._allRegionItems = data[0].results;
+
+        this.loadData(true);
+      });
   }
 
   ngOnInit() {
@@ -100,11 +144,8 @@ export class DataComponent implements OnInit {
       this._isLoading = false;
 
       if (isFirstLoad) {
-        this.dataRequestService.getRegions(data.regions).subscribe(data => this._foundedRegionIds = data.results);
-        this.dataRequestService.getAllOkveds().subscribe(okvedsResults => {
-          let allItems = okvedsResults.results;
-          this._foundedOkvedIds = allItems.filter(x => data.okveds.some(y => y == x.id));
-        });
+        this._foundedOkvedItems = this._allOkvedsItems.filter(x => data.okveds.some(y => y == x.id));
+        this._foundedRegionItems = this._allRegionItems.filter(x => data.regions.some(y => y == x.id));
       }
     });
   }
@@ -113,7 +154,7 @@ export class DataComponent implements OnInit {
     this._companies = [];
     this._selectedOkvedIds = [];
     this._selectedRegionIds = [];
-    this.loadData(false);
+    this.loadData(true);
   }
 
   public onSearchPressKeyDown(event: any): void {
@@ -144,5 +185,35 @@ export class DataComponent implements OnInit {
     else {
       array.push(item.id);
     }
+  }
+
+  public onShowAllRegions_Clicked(event: any): void {
+    this._isVisibleAllRegions = true;
+    this._limitRegions = 500;
+
+    event.preventDefault()
+  }
+
+  public onHideAllRegions_Clicked(event: any): void {
+    this._isVisibleAllRegions = false;
+    this._limitRegions = 10;
+    this.regionsFilter = "";
+
+    event.preventDefault()
+  }
+
+  public onShowAllOkveds_Clicked(event: any): void {
+    this._isVisibleAllOkveds = true;
+    this._limitOkveds = 5000;
+
+    event.preventDefault()
+  }
+
+  public onHideAllOkveds_Clicked(event: any): void {
+    this._isVisibleAllOkveds = false;
+    this._limitOkveds = 10;
+    this.okvedFilter= "";
+
+    event.preventDefault()
   }
 }

@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CompanyComponent } from './company/company.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { OrderModule } from 'ngx-order-pipe';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     AppRoutingModule,
     HttpModule,
     HttpClientModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    OrderModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
